@@ -1,0 +1,6 @@
+1. notion de blade (travailler sur un test de la var sysDescr)
+2. notion de tel ip (faire un point avec Sylvain la prochaine fois) N° de poste / @MAC / DEscr
+3. crontab ifErr, nb unité d'une pile (si diff alerte mail)
+4. maj des ports (vlan vitesse depuis l'interface)
+5. notion dns/hosts (si un site n'utilise pas le dns pour référencer ses equipements) : réutiliser le champ TYPE du .switches.list par exemple
+6. remonter les infos de POE

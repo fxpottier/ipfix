@@ -1,0 +1,61 @@
+-------------
+POE
+-------------
+0                           ccitt                                 NODE
+0.0                         zeroDotZero                           NODE
+1                           iso                                   NODE
+1.3                         org                                   NODE
+1.3.6                       dod                                   NODE
+1.3.6.1                     internet                              NODE
+1.3.6.1.2                   mgmt                                  NODE
+1.3.6.1.2.1                 mib-2                                 NODE
+1.3.6.1.2.1.105             powerEthernetMIB                      NODE
+1.3.6.1.2.1.105.0           pethNotifications                     NODE
+1.3.6.1.2.1.105.0.1         pethPsePortOnOffNotification          NODE
+1.3.6.1.2.1.105.0.2         pethMainPowerUsageOnNotification      NODE
+1.3.6.1.2.1.105.0.3         pethMainPowerUsageOffNotification     NODE
+1.3.6.1.2.1.105.1           pethObjects                           NODE
+1.3.6.1.2.1.105.1.1         pethPsePortTable                      NODE
+1.3.6.1.2.1.105.1.1.1       pethPsePortEntry                      NODE
+1.3.6.1.2.1.105.1.1.1.1     pethPsePortGroupIndex                 LEAF  Integer32
+1.3.6.1.2.1.105.1.1.1.2     pethPsePortIndex                      LEAF  Integer32
+1.3.6.1.2.1.105.1.1.1.3     pethPsePortAdminEnable                LEAF  TruthValue <-- j'ai! coooool
+1.3.6.1.2.1.105.1.1.1.4     pethPsePortPowerPairsControlAbility   LEAF  TruthValue
+1.3.6.1.2.1.105.1.1.1.5     pethPsePortPowerPairs                 LEAF  INTEGER
+1.3.6.1.2.1.105.1.1.1.6     pethPsePortDetectionStatus            LEAF  INTEGER <-- j'ai
+1.3.6.1.2.1.105.1.1.1.7     pethPsePortPowerPriority              LEAF  INTEGER <-- j'ai, mais c'est quoi ?
+1.3.6.1.2.1.105.1.1.1.8     pethPsePortMPSAbsentCounter           LEAF  Counter32 <-- j'ai, mais c'est quoi ?
+1.3.6.1.2.1.105.1.1.1.9     pethPsePortType                       LEAF  SnmpAdminString <-- j'ai, mais c'est quoi ?
+1.3.6.1.2.1.105.1.1.1.10    pethPsePortPowerClassifications       LEAF  INTEGER <-- j'ai (1==class0, 4==class3 etc.)
+1.3.6.1.2.1.105.1.1.1.11    pethPsePortInvalidSignatureCounter    LEAF  Counter32 <-- j'ai, mais bof
+1.3.6.1.2.1.105.1.1.1.12    pethPsePortPowerDeniedCounter         LEAF  Counter32 <-- j'ai, mais bof
+1.3.6.1.2.1.105.1.1.1.13    pethPsePortOverLoadCounter            LEAF  Counter32 <-- j'ai, mais bof 
+1.3.6.1.2.1.105.1.1.1.14    pethPsePortShortCounter               LEAF  Counter32 <-- j'ai, mais bof
+
+1.3.6.1.2.1.105.1.3         pethMainPseObjects                    NODE
+1.3.6.1.2.1.105.1.3.1       pethMainPseTable                      NODE  <-- on s'en fout se sont les valeurs de consommation globale de chaque unité
+1.3.6.1.2.1.105.1.3.1.1     pethMainPseEntry                      NODE
+1.3.6.1.2.1.105.1.3.1.1.1   pethMainPseGroupIndex                 LEAF  Integer32
+1.3.6.1.2.1.105.1.3.1.1.2   pethMainPsePower                      LEAF  Gauge32
+1.3.6.1.2.1.105.1.3.1.1.3   pethMainPseOperStatus                 LEAF  INTEGER
+1.3.6.1.2.1.105.1.3.1.1.4   pethMainPseConsumptionPower           LEAF  Gauge32
+1.3.6.1.2.1.105.1.3.1.1.5   pethMainPseUsageThreshold             LEAF  Integer32
+
+1.3.6.1.4.1                  enterprises                         NODE
+1.3.6.1.4.1.45               synoptics                           NODE
+1.3.6.1.4.1.45.2             temporary                           NODE
+1.3.6.1.4.1.45.5             bayStackMibs                        NODE
+1.3.6.1.4.1.45.5.8           bayStackPethExtMib                  NODE
+1.3.6.1.4.1.45.5.8.1         bspeObjects                         NODE
+1.3.6.1.4.1.45.5.8.1.1       bspePethPsePortExtTable             NODE
+1.3.6.1.4.1.45.5.8.1.1.1     bspePethPsePortExtEntry             NODE
+1.3.6.1.4.1.45.5.8.1.1.1.1   bspePethPsePortExtGroupIndex        LEAF  Integer32
+1.3.6.1.4.1.45.5.8.1.1.1.2   bspePethPsePortExtIndex             LEAF  Integer32
+1.3.6.1.4.1.45.5.8.1.1.1.3   bspePethPsePortExtPowerLimit        LEAF  Integer32
+1.3.6.1.4.1.45.5.8.1.1.1.5   bspePethPsePortExtMeasuredVoltage   LEAF  Gauge32
+1.3.6.1.4.1.45.5.8.1.1.1.6   bspePethPsePortExtMeasuredCurrent   LEAF  Gauge32
+1.3.6.1.4.1.45.5.8.1.1.1.7   bspePethPsePortExtMeasuredPower     LEAF  Gauge32
+1.3.6.1.4.1.45.5.8.1.2       bspePethMainPseExtTable             NODE
+1.3.6.1.4.1.45.5.8.1.2.1     bspePethMainPseExtEntry             NODE
+1.3.6.1.4.1.45.5.8.1.2.1.1   bspePethMainPseExtGroupIndex        LEAF  Integer32
+1.3.6.1.4.1.45.5.8.1.2.1.2   bspePethMainPseExtPowerPresent      LEAF  INTEGER

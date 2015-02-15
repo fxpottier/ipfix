@@ -1,0 +1,19 @@
+#!/bin/bash
+# ipfix
+
+# Pour une execution planifiée dans la crontab, ajoutez les 2 lignes suivantes :
+#SHELL=/bin/bash
+#@hourly cd /opt/ipfix/ ; /opt/ipfix/ipfix > /opt/ipfix/ipfix.log 2>&1 ;
+
+source .ipfix
+
+echo `date "+%d-%m-%Y %H:%M:%S%z"` " IPFIX DEBUT " 
+cd $WDIR
+
+# mise à jour des données ARP
+./ipfix.arp.sh
+
+# Mise à jour des données FDB
+./ipfix.fdb.sh
+
+echo `date "+%d-%m-%Y %H:%M:%S%z"` " IPFIX FIN "
