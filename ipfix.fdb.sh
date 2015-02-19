@@ -39,7 +39,7 @@ do
 		case $SYSDESCR in
 
 		*blade*hp*|*hp*blade*) #echo "blade HP: "$SYSDESCR 
-			echo "blade HP: "$SYSDESCR"\nVERIF:snmpbulkwalk -t $TIMEOUT $DNS $SNMP"
+			#echo "blade HP: "$SYSDESCR"\nVERIF:snmpbulkwalk -t $TIMEOUT $DNS $SNMP"
 			# MIB: http://www.circitor.fr/Mibs/Html/BLADETYPE4-NETWORK-MIB.php
 			snmpbulkwalk -t $TIMEOUT $SNMP $DNS IF-MIB::ifName |awk 'BEGIN{i=0;}{ \
                                 n=split($1,ifIndex,"."); i++; if(ifIndex[n]<10000) print i,"'$DNS'."i}' > $DNS.ifName
@@ -218,26 +218,14 @@ wait
 echo `date "+%d-%m-%Y %H:%M:%S%z"` " Fin interrogation des équipements. Début de la consolidation des données."
 
 # Maintenant mettons à jour les données du fichier de références fdb.ref
-# FX : !!! ici nous supprimons toutes les entrées existantes concernant soit le port soit la mac, avant d'injecter la ligne mac/port.
-#          Du coup pour un port qui aurait plusieurs mac associées (ex: sur les blades) à la fon du traitement nous n'avons que la dernière mac sur ce port.
-#          Il faudrait donc faire 2 traitements :
-# 		1. Une boucle de suppression de tous les ports et mac trouvées.
-# 		2. Refaire la boucle pour les ajouts. De cette manière nous aurons plusieurs entrées possible pour un même port.
-### FX2 !!!! Maintenant il faudrait optimiser ces 2 boucles car effectuer autant de commande sed que de port ... c'est long !
-#	Idée : il faudrait lancer une seule commande sed qui se base sur le contenu de notre fichier ( via retour awk ou grp) 
-#	=> man sed ? y a t il une option pour pass un fichier à sed pour en traiter un autre ???
-while read DNS
+# FX : ici nous supprimons toutes les entrées existantes concernant soit le port soit la mac, avant d'injecter la ligne mac/port.
+while read DNS IP SNMP
 do
 
+	[[ "$(host $DNS | awk '{x=$NF}END{print x}')" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]] || DNS=$IP 
+
 	# 1. on commence par supprimer les données obsolètes.
-	## FX !!!!! ajouter un test dans awk sur les var $2 (port) et $4 (mac) tester cela :
-	#awk '{print "/"$2" /d\n/"$4" /d"}' $DNS.ref | sed -f - $PDIR/fdb.ref
-	while read idx port parametres mac ip date; do
-		# Si les variables mac et port ne sont pas vides, on supprime les entrées correspondantes dans fdb.ref
-		if [[ -n "$mac" && -n "$port" ]]; then
-			sed -i "/$port /d ; /$mac /d" $PDIR/fdb.ref
-		fi;
-	done < $DNS.ref ; 
+	awk '$2 ! /^$/ && $4 ! /^$/ {print "/"$2" /d\n/"$4" /d"}' $DNS.ref | sed -i -f - $PDIR/fdb.ref
 
 	# 2. on boucle à nouveau insérer les nouvelles données.
 	while read idx port parametres mac ip date; do
@@ -248,6 +236,7 @@ do
 		fi;
 	done < $DNS.ref ; rm $DNS.ref ;
 
-done < <( tr -d '\r' < .switches.list | awk '(NF>1) && !(/^( |\t)*#/) {print $1}' )
+done < <(awk '(NF>1) && !(/^( |\t)*#/) {print $0}' .switches.list | tr -d '\r' )
+#done < <( tr -d '\r' < .switches.list | awk '(NF>1) && !(/^( |\t)*#/) {print $0}' )
 
 echo `date "+%d-%m-%Y %H:%M:%S%z"` " Fin de la mse à jour des données FDB." 
